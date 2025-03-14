@@ -1,7 +1,8 @@
 #include <iostream>
 #include "Administracion.h"
+#include "Propietario.h"
 
-
+using namespace std;
 Administracion::Administracion() {
     cout << "Entre al constructor de administracion \n";
     cobroAscensor = 2000;
@@ -13,14 +14,19 @@ Administracion::Administracion() {
     cout << "Terminé la inicializacion \n";
 }
 
+
 /*
  * Método para instanciar los objetos que se usarán en el código
  */
 void Administracion::inicializarDatos() {
     Propietario *persona1 = new Propietario();
+    cout << "Se creo correctamente propietario 1"<< endl;
     Propietario *persona2 = new Propietario();
+    cout << "Se creo correctamente propietario 2" << endl;
     Propietario *persona3 = new Propietario();
+    cout << "Se creo correctamente propietario 3" << endl;
     Propietario *persona4 = new Propietario();
+    cout << "Se creo correctamente propietario 4" << endl;
     Propiedad *prop1 = new Propiedad();
     Propiedad *prop2 = new Propiedad();
     Propiedad *prop3 = new Propiedad();
@@ -28,6 +34,8 @@ void Administracion::inicializarDatos() {
     CuartoUtil *cuarto1 = new CuartoUtil();
     CuartoUtil *cuarto2 = new CuartoUtil();
     CuartoUtil *cuarto3 = new CuartoUtil();
+
+
 
     //Inicializar cuartos utiles
     vector<CuartoUtil *> cuartosUtiles;
@@ -101,7 +109,18 @@ void Administracion::inicializarDatos() {
     propietarios.push_back(persona2);
     propietarios.push_back(persona3);
     propietarios.push_back(persona4);
+
+    prueba(persona1, prop1);
+    generarReportePropiedades();
+
+
 }
+void Administracion::prueba(Propietario *persona, Propiedad *propiedad){
+    cout << "Dirección de memoria de persona" << ": " << &persona  << endl;
+    cout << "Dirección de memoria de apartamentos" << ": " << &propiedades  << endl;
+    cout << "Direccion de memroia de la propiedad dentro de la propietario: " << persona->getPropiedad()<< endl;
+}
+
 
 void Administracion::agregarPropiedad() {
     int piso;
@@ -155,6 +174,30 @@ void Administracion::agregarPropiedad() {
     propiedades.push_back(propTemp);
     cout << "\nPropiedad agregada" << endl;
 }
+void Administracion:: imprimirEstadoCuartoUtil(CuartoUtil* cuarto) {
+    if (!cuarto) {
+        cout << "No disponible";
+    } else if (cuarto->isEstaTerminado()) {
+        cout << "Terminado";
+    } else {
+        cout << "No terminado";
+    }
+}
+
+void Administracion :: generarReportePropiedades(){
+    int suma = 0;
+    for(int i = 0; i < propiedades.size(); i++){
+        CuartoUtil *cuarto = propiedades[i]->getCuartoUtil();
+        cout << "Propietario: " << propietarios[i]->getNombre() << "Id: "<< propietarios[i]->getIdentificacion() << endl;
+        cout <<"    -" << "Propiedad - Id: " <<propiedades[i]->getNumIdentificacion() << " Piso: " << propiedades[i]->getPiso() << " Area: " << propiedades[i]->getAreaPropiedad()<< endl;
+        cout <<"    -" << "Tienen Parqueadero: " << propiedades[i]->isHayParqueadero() << endl;
+        cout <<"    -" << "Cuarto util: ";
+        imprimirEstadoCuartoUtil(propiedades[i]->getCuartoUtil());
+        cout << endl;
+        suma += propietarios[i]->getPropiedad()->calcularRecargo(cobroAscensor,costoBase,recargo);
+    }
+    cout << "Este es el valor de administracion " << suma<< endl;
+}
 
 void Administracion::agregarPropietario() {
     string nombre;
@@ -196,7 +239,7 @@ void Administracion::relacionarPropietarioPropiedad() {
                 idxTempPropietario = i;
             } else {
                 cout << " No es posible seleccionar el propietario con id " << id
-                        << "este propietario ya tiene una propiedad asociada" << endl;
+                     << "este propietario ya tiene una propiedad asociada" << endl;
                 break;
             }
         }
@@ -220,10 +263,9 @@ void Administracion::relacionarPropietarioPropiedad() {
         Propiedad *propiedadTemp = propiedades[idxTempPropiedad];
         propietarios[idxTempPropietario]->setPropiedad(propiedadTemp);
         cout << "Propietario " << propietarios[idxTempPropietario]->getNombre() << " asociado con propiedad "
-                << propiedadTemp->getNumIdentificacion() << endl;
+             << propiedadTemp->getNumIdentificacion() << endl;
     }
 }
-
 
 void Administracion::imprimirUnPropietario(double id) {
     bool found = false;
@@ -260,6 +302,7 @@ void Administracion::imprimirPropietariosConParqueadero() {
     }
 }
 
+
 void Administracion::recaudarAdministracion() {
     float valorAdministracion = 0;
     for (int i = 0; i < propietarios.size(); i++) {
@@ -286,7 +329,6 @@ Administracion::~Administracion() {
     cout << "LLame al destructor, elimine todo y termine" << endl;
 }
 
-
 void Administracion::imprimirPropietariosSinCuarto() {
     for (int i = 0; i < propietarios.size(); ++i) {
         if (propietarios[i]->getPropiedad() != nullptr) {
@@ -296,7 +338,6 @@ void Administracion::imprimirPropietariosSinCuarto() {
         }
     }
 }
-
 void Administracion::imprimirPropietariosCuartoUtil(bool isTerminado) {
     for (auto &propietario: propietarios) {
         if (propietario->getPropiedad() != nullptr) {

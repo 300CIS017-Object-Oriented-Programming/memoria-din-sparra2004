@@ -45,6 +45,12 @@ public:
     void agregarPropietario();
 
     void relacionarPropietarioPropiedad();
+
+    void prueba(Propietario *persona, Propiedad *propiedad);
+
+    void generarReportePropiedades();
+
+    void imprimirEstadoCuartoUtil(CuartoUtil* cuarto);
 };
 
 #endif
