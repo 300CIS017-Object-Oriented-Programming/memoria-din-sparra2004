@@ -116,8 +116,8 @@ void Administracion::inicializarDatos() {
 
 }
 void Administracion::prueba(Propietario *persona, Propiedad *propiedad){
-    cout << "Dirección de memoria de persona" << ": " << &persona  << endl;
-    cout << "Dirección de memoria de apartamentos" << ": " << &propiedades  << endl;
+    cout << "Direccion de memoria de persona" << ": " << &persona  << endl;
+    cout << "Direccion de memoria de apartamentos" << ": " << &propiedades  << endl;
     cout << "Direccion de memroia de la propiedad dentro de la propietario: " << persona->getPropiedad()<< endl;
 }
 
